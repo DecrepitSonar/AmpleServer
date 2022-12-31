@@ -1,0 +1,224 @@
+collections
+
+[
+  {
+    _id: ObjectId("61ddffd0551cefb371075c9c"),
+    id: '466bc8cef3e71de796ec483e212724a2c2044c68',
+    type: 'Album',
+    title: 'East Atlanta Love Letter',
+    name: '6lack',
+    foreignId: '2133e19292afc827cc42285f6f0e565c',
+    imageURL: '5575c186af624d52a5434292f2f5aa23',
+    releaseDate: ISODate("2021-01-11T22:08:16.098Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075c9f"),
+    id: '3691308f2a4c2f6983f2880d32e29c84',
+    type: 'Album',
+    title: 'Drive Slow',
+    name: '6lack',
+    foreignId: 'f16cb42875013a1118c1a0b3717202e9536851e0',
+    imageURL: '3691308f2a4c2f6983f2880d32e29c84',
+    releaseDate: ISODate("2022-01-11T22:08:16.100Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075ca2"),
+    id: '233692e0aad5a445107564ca1bb68d51',
+    type: 'Album',
+    title: "Yesterday's Tomorrow",
+    name: '6lack',
+    foreignId: 'f8cee59de17a4d91526a3d19b57163ba26eae1f9',
+    imageURL: '233692e0aad5a445107564ca1bb68d51',
+    releaseDate: ISODate("2022-01-11T22:08:16.102Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075ca5"),
+    id: '457391c9c82bfdcbb4947278c0401e41',
+    type: 'Album',
+    title: 'Blonde',
+    name: '6lack',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: '457391c9c82bfdcbb4947278c0401e41',
+    releaseDate: ISODate("2022-01-11T22:08:16.103Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075ca8"),
+    id: 'e83249bd3ba79932e16fb1fb5100dafade9954c2',
+    type: 'Album',
+    title: 'Home For The Holidays',
+    name: '6lack',
+    foreignId: 'f6674586867935b27502ecd595d9a1f0',
+    imageURL: 'e83249bd3ba79932e16fb1fb5100dafade9954c2',
+    releaseDate: ISODate("2022-01-11T22:08:16.104Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cae"),
+    id: '506822efbe22ec6ef41d5a0929732679a3ce01a8',
+    type: 'Album',
+    title: 'Juice Box',
+    name: 'Mac Ayres',
+    foreignId: 'f16cb42875013a1118c1a0b3717202e9536851e0',
+    imageURL: '506822efbe22ec6ef41d5a0929732679a3ce01a8',
+    releaseDate: ISODate("2022-01-11T22:08:16.106Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cab"),
+    id: 'b40981aab75932c5b2f555f50769d878e44913d7',
+    type: 'Album',
+    title: 'Magic 8ball',
+    name: 'Mac Ayres',
+    foreignId: 'f16cb42875013a1118c1a0b3717202e9536851e0',
+    imageURL: 'b40981aab75932c5b2f555f50769d878e44913d7',
+    releaseDate: ISODate("2022-01-11T22:08:16.105Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cb1"),
+    id: '1af17e73721dbe0c40011b82ed4bb1a7dbe3ce29',
+    type: 'Album',
+    title: 'Something To Feel',
+    name: 'mac',
+    foreignId: 'f16cb42875013a1118c1a0b3717202e9536851e0',
+    imageURL: '1af17e73721dbe0c40011b82ed4bb1a7dbe3ce29',
+    releaseDate: ISODate("2022-01-11T22:08:16.107Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cb4"),
+    id: 'ef0ebbb77298e1fbd81f756a4efc35b977c93dae',
+    type: 'Album',
+    title: 'Channel Orange',
+    name: 'Frank Ocean',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: 'ef0ebbb77298e1fbd81f756a4efc35b977c93dae',
+    releaseDate: ISODate("2022-01-11T22:08:16.107Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cb7"),
+    id: '85887fd5f072e7140cff1edffc369b13673be09c',
+    type: 'Single',
+    title: 'In My Room',
+    name: 'Frank Ocean',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: '85887fd5f072e7140cff1edffc369b13673be09c',
+    releaseDate: ISODate("2022-01-11T22:08:16.108Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cba"),
+    id: 'c4a7e366321616dd1500c515f38e6be6c9b7541a',
+    type: 'Single',
+    title: 'DHL',
+    name: 'Frank Ocean',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: 'c4a7e366321616dd1500c515f38e6be6c9b7541a',
+    releaseDate: ISODate("2022-01-11T22:08:16.108Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cbd"),
+    id: '46dcd4dd65b63d106b8cfb4aad906b23716cc613',
+    type: 'Single',
+    title: 'Moon River',
+    name: 'Frank Ocean',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: '46dcd4dd65b63d106b8cfb4aad906b23716cc613',
+    releaseDate: ISODate("2022-01-11T22:08:16.108Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cc0"),
+    id: 'af08f2350678e3f108e24a3ce6b7c4262ff61fef',
+    type: 'Single',
+    title: 'Lens',
+    name: 'Frank Ocean',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: 'af08f2350678e3f108e24a3ce6b7c4262ff61fef',
+    releaseDate: ISODate("2022-01-11T22:08:16.109Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cc3"),
+    id: '0b12cd0f056e321968c9abade72a80f1c6f351d2',
+    type: 'Single',
+    title: 'Biking',
+    name: 'Frank Ocean',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: '0b12cd0f056e321968c9abade72a80f1c6f351d2',
+    releaseDate: ISODate("2022-01-11T22:08:16.109Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cc6"),
+    id: '5a9e6bdf99bea400d1c6c8d70037cefa46149159',
+    type: 'Single',
+    title: 'Chanel',
+    name: 'Frank Ocean',
+    foreignId: '6c1d77a1851c78aa2894f8b7be3f7af4',
+    imageURL: '5a9e6bdf99bea400d1c6c8d70037cefa46149159',
+    releaseDate: ISODate("2022-01-11T22:08:16.109Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cc9"),
+    id: '5e3b687ec0d28caa6fe647f53d684e9fd3ebb000',
+    type: 'Album',
+    title: 'Painted',
+    name: 'Lucky Daye',
+    foreignId: '1ce1416347075b6070a35ce5e9d26b61d91ea6c3',
+    imageURL: '5e3b687ec0d28caa6fe647f53d684e9fd3ebb000',
+    releaseDate: ISODate("2022-01-11T22:08:16.110Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075ccc"),
+    id: 'b49f5e809c296624a318e21770e74d37331bdf9e',
+    type: 'Album',
+    title: 'Int Insustry Me',
+    name: 'Sy Ari Da Kid',
+    foreignId: 'd781079843d530af1f0a02d431f8e5335c1bc5e6',
+    imageURL: 'b49f5e809c296624a318e21770e74d37331bdf9e',
+    releaseDate: ISODate("2022-01-11T22:08:16.110Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075ccf"),
+    id: '2768459bbb0563e984acffb7e56731a83b88c601',
+    type: 'Album',
+    title: 'While We Wait',
+    name: 'Kehlani',
+    foreignId: 'f65c7210ab215d55f9b8193e85044801d8661f16',
+    imageURL: '2768459bbb0563e984acffb7e56731a83b88c601',
+    releaseDate: ISODate("2022-01-11T22:08:16.111Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cd2"),
+    id: '1f24a33d27eaeca07edd904ff7c42301001acc34',
+    type: 'Album',
+    title: 'Dirt Road Diamond',
+    name: 'Childish Major',
+    foreignId: '045c4400b983f685285eda35b519a5b249ff94fb',
+    imageURL: '1f24a33d27eaeca07edd904ff7c42301001acc34',
+    releaseDate: ISODate("2022-01-11T22:08:16.111Z"),
+    __v: 0
+  },
+  {
+    _id: ObjectId("61ddffd0551cefb371075cd5"),
+    id: 'e8aa24e5254efe4a0b64aa2fac90bdd0c6be9097',
+    type: 'Album',
+    title: 'Dinner Party',
+    name: 'Terrance Martin, Kamasi Washington, Robert Glasper,9th Wonder',
+    foreignId: '723a75be95a6adcfb624e9ed3d899aa76011295b',
+    imageURL: 'e8aa24e5254efe4a0b64aa2fac90bdd0c6be9097',
+    releaseDate: ISODate("2022-01-11T22:08:16.111Z"),
+    __v: 0
+  }
+]

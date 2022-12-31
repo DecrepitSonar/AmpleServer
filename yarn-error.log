@@ -1,0 +1,43 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.11/libexec/bin/yarn.js dev
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  14.17.6
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: ENOSPC: no space left on device, mkdir '/var/folders/c3/80lyd_ps4ssb73h993gjlqb40000gp/T/yarn--1634938080875-0.5825131108802055'
+
+npm manifest: 
+  {
+    "name": "spotlight",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js",
+      "dev": "nodemon index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.17.1",
+      "nodemon": "^2.0.13",
+      "uuid": "^8.3.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
