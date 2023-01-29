@@ -1,10 +1,33 @@
-
-const { Users } = require('./Models/Users.js')
+const { User } = require('./Models/Users.js')
 
 // Authengication - User login Route ( username, password ) ->  user object : status 403
+const bcrypt = require('bcrypt')
+exports.registerUser = async (data) => {
 
-exports.registerUser = async(username, password) => {}
-exports.authenticate = async(credentials) => {
+    // Check if User is Existing
+    User.findOne({where: {email: data.email}})
+    .then( response => {
+      console.log( "user already exists ")
+      return 
+    })
+
+    //Create New user
+    try{
+      let pwHash = await bcrypt.hash(data.password, 10)
+      let user = User.create({
+        username: data.username, 
+        password: pwHash,
+        email: data.email
+      })
+
+      return user 
+    }
+    catch( err ){
+      return "There was an error creating user"
+    }
+
+}
+exports.authenticate = async (credentials) => {
   console.log("Authenticating user...")
   // console.log(credentials.username.toLowerCase())
   console.log(credentials)

@@ -5,20 +5,23 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
 const uuid = require('uuid')
-const clientSessions = require('client-sessions')
 const cors = require("cors")
+
+require("dotenv").config();
  
 // Services
 const db = require('./DataBaseService.js')
 const catalog = require('./CatalogService.js')
 const auth = require('./AuthService.js')
 const contentProvider = require("./StreamService.js")
+const clientSessions = require('client-sessions')
 
 app.set('port', 8000 )
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded( {extended: false}))
 app.use(bodyParser.json())
+app.use(cors())
 app.use(clientSessions({
   cookieName: "session",
   secret: 'secret',
@@ -26,23 +29,21 @@ app.use(clientSessions({
   activeDuration: 1000 * 60 }))
 
 app.use(function(req, res, next) { res.locals.session = req.session; next();});
-app.use(cors())
 
-app.get( '/', (req,res) => { })
 
-app.post("/", (req,res) => {
-  console.log(req.body)
-})
+app.post('/api/v1/auth/login', (req,res) => {
 
-app.post('/api/v1/authenticate', (req,res) => {
-
+  // get user agent
   const agent = req.body.userAgent = req.get('user-agent')
 
+  // call autentication function and verify user
   auth.authenticate(req.body)
   .then((user) => {
 
     // console.log("response returned ")
     // console.log(user)
+
+    // check if user is provided
     if(user != undefined){
 
       req.session.user = {
@@ -60,9 +61,24 @@ app.post('/api/v1/authenticate', (req,res) => {
     }
   })
 
-  .catch((err) => {
-    console.log(err)
-    res.status(500) }) })
+})
+
+app.post('/api/v1/auth/signup', (req,res) => {
+  console.log( "body", req.body)
+  
+  auth.registerUser(req.body)
+  .then( response => {
+    // console.log( response )
+    res.json( response )
+  })
+  .catch( err => console.log( err ))
+})
+
+app.get( '/', (req,res) => { })
+
+app.post("/", (req,res) => {
+  console.log(req.body)
+})
 
 // Libary - Rout -> library object containing content sections and array of content
 // // app.get('/api/v1/library', (req, res) => {
