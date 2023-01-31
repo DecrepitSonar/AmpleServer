@@ -1,4 +1,14 @@
-const { User } = require('./Models/Users.js')
+const { 
+  User, 
+  Subscriptions, 
+  Post, 
+  SavedCollection, 
+  HistoryCollection, 
+  Setting, 
+  Account
+} = require('./Models/Users.js')
+
+const uuid = require('uuid').v4()
 
 // Authengication - User login Route ( username, password ) ->  user object : status 403
 const bcrypt = require('bcrypt')
@@ -7,22 +17,66 @@ exports.registerUser = async (data) => {
     // Check if User is Existing
     User.findOne({where: {email: data.email}})
     .then( response => {
-      console.log( "user already exists ")
-      return 
+      // console.log( "user already exists ")
+      return "user already exists"
     })
 
-    //Create New user
     try{
-      let pwHash = await bcrypt.hash(data.password, 10)
-      let user = User.create({
+       // Has password 
+       let pwHash = await bcrypt.hash(data.password, 10)
+
+      // Create new user and add settings foreign key
+      let user = await User.create({
         username: data.username, 
-        password: pwHash,
-        email: data.email
+        email: data.email, 
       })
+      .then( result => { return result })
+
+       // Create settings
+      let setting = await Setting.create({
+        password: pwHash,
+      })
+      .then( result => { return result })
+
+      // Associate settings with user 
+      // await user.setSetting(setting)
+      await user.setSetting(setting)
+
+     
+      // Create Account Settings 
+      const account = await Account.create({
+        imageURL: "6c1d77a1851c78aa2894f8b7be3f7af4"
+      })
+      .then( result => { return result })
+
+      // // // Associate Account Settings with User's account 
+      await setting.setAccount(account)
+
+      // // Create user subscription 
+      // let subscriptions = await Subscriptions.create({})
+      // .then( result => { return result })
+
+      // // Associate subscriptions with user
+      //  await subscriptions.setUser(user)
+      
+      // await Settings.findOne({include: User})
+
+      // // Create Saved Collection 
+      // const saves = SavedCollection.create =
+      // // Associate collection with User 
+      // // Create History 
+      // // Associate History with User 
+      // // Create Subscriptions
+      // // Associate subscriptions with user
+      
+      User.findOne({include: Setting})
+      .then( result => { console.log( "user and setting", result)})
+      
 
       return user 
     }
     catch( err ){
+      console.log( err)
       return "There was an error creating user"
     }
 

@@ -62,13 +62,13 @@ app.post('/api/v1/auth/login', (req,res) => {
   })
 
 })
-
+ 
 app.post('/api/v1/auth/signup', (req,res) => {
   console.log( "body", req.body)
   
   auth.registerUser(req.body)
   .then( response => {
-    // console.log( response )
+    console.log( response )
     res.json( response )
   })
   .catch( err => console.log( err ))

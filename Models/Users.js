@@ -10,7 +10,6 @@ const User = sequelize.define("User",{
     defaultValue: DataTypes.UUIDV4 
   },
   username: { type: DataTypes.STRING },
-  password: { type: DataTypes.STRING,},
   email: { type: DataTypes.STRING },
   bio: { type: DataTypes.STRING },
 },
@@ -27,71 +26,31 @@ const Subscriptions = sequelize.define("Subscription",{
   }
 },
 {
-  timestamps: false,
-})
-
-const AccountSettings = sequelize.define("AccountSettings",{
-  id: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    unique: true,
-    defaultValue: DataTypes.UUIDV4 
-  },
-    imageURL: { type: DataTypes.STRING },
-    subscribed: { 
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    verified: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    Type: {
-      type: DataTypes.STRING,
-      defaultValue: "User"
-    },
-},
-{
   timestamps: true,
-  createdAt: "AccountCreated",
+  createdAt: "subscriptionDate",
   updatedAt: false
 })
 
-const PaymentSettings = sequelize.define("PaymentSettings",{
+const Post = sequelize.define("Post", {
+  id: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    unique: true,
+    defaultValue: DataTypes.UUIDV4 
+  }
+},
+{
+  timestamps: false,
+})
+
+const SavedCollection = sequelize.define("Save", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
     unique: true,
     defaultValue: DataTypes.UUIDV4 
   },
-  name: {type: DataTypes.STRING},
-  address: {type: DataTypes.STRING},
-  CCNum: {type: DataTypes.BIGINT},
-  Pin: {type: DataTypes.INTEGER},
-},
-{
-  timestamps: false,
-})
-
-const PostsCollection = sequelize.define("Posts", {
-  id: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    unique: true,
-    defaultValue: DataTypes.UUIDV4 
-  }
-},
-{
-  timestamps: false,
-})
-
-const SavedCollection = sequelize.define("Saves", {
-  id: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    unique: true,
-    defaultValue: DataTypes.UUIDV4 
-  }
+  userId: { type: DataTypes.UUID}
 },
 {
   timestamps: false,
@@ -103,23 +62,79 @@ const HistoryCollection = sequelize.define("History", {
     primaryKey: true,
     unique: true,
     defaultValue: DataTypes.UUIDV4 
-  }
+  },
+  userId: { type: DataTypes.UUID}
 },
 {
   timestamps: false,
 })
 
+const Setting = sequelize.define("Setting",{
+  id: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    unique: true,
+    defaultValue: DataTypes.UUIDV4
+  },
+  password: { type: DataTypes.STRING,},
+},
+{ 
+  timestamps: true,
+  createdAt: false,
+  updatedAt: true
+})
+
+const Account = sequelize.define("Account",{
+  id: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    unique: true,
+    defaultValue: DataTypes.UUIDV4 
+  },
+  imageURL: { type: DataTypes.STRING },
+  subscribed: { 
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  verified: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  Type: {
+    type: DataTypes.STRING,
+    defaultValue: "User"
+  },
+  name: {type: DataTypes.STRING},
+  address: {type: DataTypes.STRING},
+  CCNum: {type: DataTypes.BIGINT},
+  Pin: {type: DataTypes.INTEGER},
+},
+{
+  timestamps: true,
+  createdAt: "AccountCreated",
+  updatedAt: false
+})
+
 // Model Association 
 //------------------------------------------------------------
-User.hasOne(AccountSettings, { foreignKey: "id" }) 
-User.hasOne(PaymentSettings, { foreignKey: "id" })
-User.hasOne(Subscriptions, { foreignKey: "id" })
-Subscriptions.hasMany(User, { foreignKey: "id" })
-User.hasOne(PostsCollection, { foreignKey: "id" })
-User.hasOne(SavedCollection, { foreignKey: "id" })
-User.hasOne(HistoryCollection, { foreignKey: "id" })
-//-------------------------------------------------------------
+User.hasOne(Setting, { foreignKey: "UserId" }) 
 
+Setting.hasOne(Account, { foreignKey: "SettingId" })
+
+// Subscriptions.hasOne(User, { foreignKey: "SubscriptionId" })
+// User.belongsTo(Subscriptions)
+
+// User.hasMany( User, { as: "entity", foreignKey: "entityId" })
+
+// User.hasOne(Post, { foreignKey: "UserId" })
+// Post.belongsTo(User)
+
+// User.hasOne(SavedCollection, { foreignKey: "UserId" })
+// SavedCollection.belongsTo(User)
+
+// User.hasOne(HistoryCollection, { foreignKey: "UserId" })
+// HistoryCollection.belongsTo(User)
+//-------------------------------------------------------------
 
 const Track = sequelize.define("Track",{
   id: {
@@ -131,23 +146,12 @@ const Track = sequelize.define("Track",{
   genre: {type: DataTypes.STRING},
   trackNum: {type: DataTypes.INTEGER},
   title: {type: DataTypes.STRING},
-  artistId: {
-    type:  DataTypes.UUID,
-    unique: true,
-    defaultValue: DataTypes.UUIDV4
-  },
-  imageURL: {type:  DataTypes.STRING },
-  audioURL: {type:  DataTypes.STRING },
-  albumId: {
-    type: DataTypes.UUID,
-    unique: true,
-    defaultValue: DataTypes.UUIDV4
-  },
-  playCount: {type: DataTypes.INTEGER},
-  videoId: {
-    type: DataTypes.UUID,
-    unique: true,
-    defaultValue: DataTypes.UUIDV4}
+  HistoryCollection: { type:  DataTypes.UUID },
+  imageURL: { type:  DataTypes.STRING },
+  audioURL: { type:  DataTypes.STRING },
+  albumId: {  type: DataTypes.UUID},
+  playCount: { type: DataTypes.INTEGER},
+  videoId: { type: DataTypes.UUID}
 },{
   timestamps: true,
   createdAt: "releaseDate",
@@ -155,10 +159,10 @@ const Track = sequelize.define("Track",{
 })
 
 //-----------------------------------------------------------
-Track.hasOne(User, {foreignKey: "artistId"})
-PostsCollection.hasMany(Track, {foreignKey: "id"})
-SavedCollection.hasMany(Track, {foreignKey: "id"})
-HistoryCollection.hasMany(Track, {foreignKey: "id"})
+Track.hasOne(Post, {foreignKey: "trackId"})
+Track.hasOne(SavedCollection, {foreignKey: "trackId"})
+Track.hasOne(HistoryCollection, {foreignKey: "trackId"})
+User.hasMany(Track, {foreignKey: "userId"})
 //-----------------------------------------------------------
 
 const Video = sequelize.define("Video",{
@@ -174,10 +178,7 @@ const Video = sequelize.define("Video",{
   views: {type: DataTypes.INTEGER},
   artistId: {type: DataTypes.STRING},
   type: {type: DataTypes.STRING},
-  trackId: {
-    type: DataTypes.UUID,
-    unique: true,
-    defaultValue: DataTypes.UUIDV4}
+  trackId: {type: DataTypes.UUID}
 },{
   timestamps: true,
   createdAt: "releaseDate",
@@ -185,20 +186,21 @@ const Video = sequelize.define("Video",{
 })
 
 //-----------------------------------------------------------
-Video.hasOne(User, {foreignKey: "artistId"})
-Video.hasOne(Track, {foreignKey: "trackId"})
-PostsCollection.hasMany(Video, {foreignKey: "id"})
-SavedCollection.hasMany(Video, {foreignKey: "id"})
-HistoryCollection.hasMany(Video, {foreignKey: "id"})
-Track.hasOne(Video,{foreignKey: "videoId"})
+Video.hasOne(Post, {foreignKey: "videoId"})
+Video.hasOne(Track, {foreignKey: "videoId"})
+Video.hasOne(SavedCollection, {foreignKey: "videoId"})
+Video.hasOne(HistoryCollection, {foreignKey: "videoId"})
+Track.hasOne(Video,{foreignKey: "trackId"})
+User.hasMany(Video, {foreignKey: "userId"})
+
 //-----------------------------------------------------------
 
 const Album = sequelize.define("Album", {
   id: {
-    type:  DataTypes.UUID,
     primaryKey: true,
+    type:  DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     unique: true,
-    defaultValue: DataTypes.UUIDV4
    },
   genre: {type: DataTypes.STRING},
   title: {type: DataTypes.STRING},
@@ -212,11 +214,43 @@ const Album = sequelize.define("Album", {
 })
 
 // //-----------------------------------------------------------
-Album.hasOne(User, {foreignKey: "id"})
-Track.hasOne(Album, {foreignKey: "id"})
 Album.hasMany(Track, {foreignKey: "albumId"})
-PostsCollection.hasMany(Album, {foreignKey: "id"})
-SavedCollection.hasMany(Album, {foreignKey: "id"})
-HistoryCollection.hasMany(Album, {foreignKey: "id"})
+Track.hasOne(Album, {foreignKey: "trackId"})
+
+Album.hasOne(Post, {foreignKey: "albumId"})
+Album.hasOne(SavedCollection, {foreignKey: "albumId"})
+Album.hasOne(HistoryCollection, {foreignKey: "albumId"})
+
+User.hasMany(Album, {foreignKey: "userId"})
 //-----------------------------------------------------------
-module.exports = {User, PostsCollection, SavedCollection, HistoryCollection}
+
+// const Playlist = sequelize.define("Playlist", {
+//   id: {
+//     type: DataTypes.STRING,
+//     primaryKey: true,
+//     unique: true,
+//     defaultValue: DataTypes.UUIDV4
+//   },
+//   name: { type: DataTypes.STRING },
+//   imageURL: { type: DataTypes.STRING }
+// },
+// {
+//   timestamps: true,
+//   createdAt: "releaseDate",
+//   updatedAt: false
+// })
+
+//-----------------------------------------------------------
+// Track.hasMany(Playlist, {foreignKey: "trackId"})
+// Track.hasMany(Video, {foreignKey: "videoId"})
+
+// SavedCollection.hasMany(Playlist,{foreignKey: "playlistId"})
+//-----------------------------------------------------------
+module.exports = {
+  User, 
+  Post, 
+  Setting,
+  Account, 
+  Subscriptions,
+  SavedCollection, 
+  HistoryCollection}
