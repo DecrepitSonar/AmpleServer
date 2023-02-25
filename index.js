@@ -12,9 +12,11 @@ require("dotenv").config();
 // Services
 const db = require('./DataBaseService.js')
 const catalog = require('./CatalogService.js')
-const auth = require('./AuthService.js')
+const auth = require('./Auth/AuthService.js')
 const contentProvider = require("./StreamService.js")
 const clientSessions = require('client-sessions')
+
+const ValidateAuth = auth.validateSessionToken
 
 app.set('port', 8000 )
 
@@ -28,53 +30,84 @@ app.use(clientSessions({
   duration: 2 * 60 * 1000,
   activeDuration: 1000 * 60 }))
 
+
 app.use(function(req, res, next) { res.locals.session = req.session; next();});
 
 
 app.post('/api/v1/auth/login', (req,res) => {
 
-  // get user agent
-  const agent = req.body.userAgent = req.get('user-agent')
-
   // call autentication function and verify user
-  auth.authenticate(req.body)
+  console.log("loging in")
+  auth.authenticateUser(req.body)
   .then((user) => {
 
-    // console.log("response returned ")
-    // console.log(user)
-
+    console.log( "user found")
     // check if user is provided
     if(user != undefined){
 
-      req.session.user = {
-       apiKey: uuid.v4()
-      }
+      console.log( "checking token")
 
-      let credentials = user
+      auth.validateSessionToken(req)
+      .then( result => {
+  
+        console.log( "setting token")
+        console.log( result )
+        let data = user
+        data.dataValues.apiKey = result
 
-      // console.log(credentials)
-      res.json(credentials)
+        res.json(data)
+      })
+      .catch( err => {
+        throw err 
+      })
 
     }else{
-      console.log("could not authenticate user")
-      res.sendStatus(403)
+      res.status(403).send("User not found")
+    }
+  })
+  .catch( err => {
+    res.status(403).json({"message": err})
+  })
+})
+ 
+// Register New User
+app.post('/api/v1/auth/signup', (req,res) => {
+
+  console.log( req.body)
+
+  let user = auth.registerUser(req.body)
+  .then( response => {
+    // Return created user
+    console.log("Created user")
+    console.log( response)
+    res.json(response) 
+  })
+  .catch( err => {
+    switch(err){
+      case 403: 
+        console.log("User already Exists")
+        res.status(403).send( "User already exists")
+      break
+      default: 
+        // Something went wrong Internally
+        console.log("Something went wrong internally")
+        res.status(500).send(err)
     }
   })
 
 })
- 
-app.post('/api/v1/auth/signup', (req,res) => {
-  console.log( "body", req.body)
-  
-  auth.registerUser(req.body)
-  .then( response => {
-    console.log( response )
-    res.json( response )
-  })
-  .catch( err => console.log( err ))
-})
 
-app.get( '/', (req,res) => { })
+app.get( '/api/v1/live', (req,res) => {
+
+  if( req.query.id == undefined){
+  fs.readFile(path.join(__dirname + "/Data/Videos.json"), ( err, data ) => {
+      if( err ) return 
+      
+    res.json( JSON.parse(data ))
+    })
+  }
+  res.status(200)
+ })
 
 app.post("/", (req,res) => {
   console.log(req.body)
@@ -530,7 +563,7 @@ app.delete('/api/v1/user/subscriptions', (req,res) => {
 
 // app.delete('/api/')
 db.initialize()
-.then( (data) => {
-
+.then( () => (auth.initialize() ))
+.then( () => {
   app.listen(app.get('port'), () => { console.log(`started app on`, app.get('port')) }) })
 .catch( err => { console.log(err) })

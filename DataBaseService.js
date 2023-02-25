@@ -12,26 +12,25 @@ const Sequelize = require("sequelize")
 //   },
 // })
 
-const sequelize = new Sequelize('postgres','postgres','12358132121',{
+const sequelize = new Sequelize(process.env.PSQL_DB, process.env.PSQL_USER, process.env.PSQL_PW,{
   host: 'localhost',
   dialect: 'postgres',
   port: 5432,
   dialectOptions: {
     ssl: false
-  },
+  }
 })
 
 exports.sequelize = sequelize
 
-exports.initialize = () => {
-  return new Promise((resolve, reject) => {
-    sequelize.sync()
-    .then( () => { resolve() })
-    .catch( err => { 
-      console.log( err )
-      reject('unable to connect to db') 
-    })
-  })
+exports.initialize = async () => {
+  try{
+   await sequelize.sync()
+  }
+  catch(err){
+    console.log( err )
+    return err
+  }
 }
 
 

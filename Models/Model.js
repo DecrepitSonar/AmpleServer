@@ -12,6 +12,7 @@ const User = sequelize.define("User",{
   username: { type: DataTypes.STRING },
   email: { type: DataTypes.STRING },
   bio: { type: DataTypes.STRING },
+
 },
 {
   timestamps: false,
@@ -23,7 +24,8 @@ const Subscriptions = sequelize.define("Subscription",{
     primaryKey: true,
     unique: true,
     defaultValue: DataTypes.UUIDV4 
-  }
+  },
+  Subscriptions: { type: DataTypes.ARRAY(DataTypes.UUID)},
 },
 {
   timestamps: true,
@@ -43,20 +45,19 @@ const Post = sequelize.define("Post", {
   timestamps: false,
 })
 
-const SavedCollection = sequelize.define("Save", {
+const BookMark = sequelize.define("BookMark", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
     unique: true,
     defaultValue: DataTypes.UUIDV4 
-  },
-  userId: { type: DataTypes.UUID}
+  }
 },
 {
   timestamps: false,
 })
 
-const HistoryCollection = sequelize.define("History", {
+const History = sequelize.define("History", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
@@ -103,6 +104,19 @@ const Account = sequelize.define("Account",{
   Type: {
     type: DataTypes.STRING,
     defaultValue: "User"
+  }},
+{
+  timestamps: true,
+  createdAt: "AccountCreated",
+  updatedAt: false
+})
+
+const PaymentCredential = sequelize.define("PaymentCredential", {
+  id: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    unique: true,
+    defaultValue: DataTypes.UUIDV4 
   },
   name: {type: DataTypes.STRING},
   address: {type: DataTypes.STRING},
@@ -111,29 +125,30 @@ const Account = sequelize.define("Account",{
 },
 {
   timestamps: true,
-  createdAt: "AccountCreated",
-  updatedAt: false
+  updatedAt: true,
+  createdAt: false
 })
 
 // Model Association 
 //------------------------------------------------------------
 User.hasOne(Setting, { foreignKey: "UserId" }) 
 
-Setting.hasOne(Account, { foreignKey: "SettingId" })
+Account.hasOne(Setting, { foreignKey: "AccountId" })
 
-// Subscriptions.hasOne(User, { foreignKey: "SubscriptionId" })
-// User.belongsTo(Subscriptions)
+Subscriptions.hasOne(User, { foreignKey: "Subscriptions" })
 
-// User.hasMany( User, { as: "entity", foreignKey: "entityId" })
+History.hasOne(User,{foreignKey: "Histories"})
 
-// User.hasOne(Post, { foreignKey: "UserId" })
-// Post.belongsTo(User)
+BookMark.hasMany(Post, {foreignKey: "postId"})
 
-// User.hasOne(SavedCollection, { foreignKey: "UserId" })
-// SavedCollection.belongsTo(User)
+User.hasMany(Post, { as: "entity", foreignKey: "UserId" })
 
-// User.hasOne(HistoryCollection, { foreignKey: "UserId" })
-// HistoryCollection.belongsTo(User)
+BookMark.hasOne(User, { foreignKey: "BookMarks" })
+
+Post.hasMany(User, { foreignKey: "Posts" })
+
+PaymentCredential.hasOne(User, { foreignKey: "paymentCredential"})
+
 //-------------------------------------------------------------
 
 const Track = sequelize.define("Track",{
@@ -160,8 +175,8 @@ const Track = sequelize.define("Track",{
 
 //-----------------------------------------------------------
 Track.hasOne(Post, {foreignKey: "trackId"})
-Track.hasOne(SavedCollection, {foreignKey: "trackId"})
-Track.hasOne(HistoryCollection, {foreignKey: "trackId"})
+Track.hasOne(BookMark, {foreignKey: "trackId"})
+Track.hasOne(History, {foreignKey: "trackId"})
 User.hasMany(Track, {foreignKey: "userId"})
 //-----------------------------------------------------------
 
@@ -188,8 +203,8 @@ const Video = sequelize.define("Video",{
 //-----------------------------------------------------------
 Video.hasOne(Post, {foreignKey: "videoId"})
 Video.hasOne(Track, {foreignKey: "videoId"})
-Video.hasOne(SavedCollection, {foreignKey: "videoId"})
-Video.hasOne(HistoryCollection, {foreignKey: "videoId"})
+Video.hasOne(BookMark, {foreignKey: "videoId"})
+Video.hasOne(History, {foreignKey: "videoId"})
 Track.hasOne(Video,{foreignKey: "trackId"})
 User.hasMany(Video, {foreignKey: "userId"})
 
@@ -214,12 +229,12 @@ const Album = sequelize.define("Album", {
 })
 
 // //-----------------------------------------------------------
-Album.hasMany(Track, {foreignKey: "albumId"})
+// Album.hasMany(Track, {foreignKey: "albumId"})
 Track.hasOne(Album, {foreignKey: "trackId"})
 
 Album.hasOne(Post, {foreignKey: "albumId"})
-Album.hasOne(SavedCollection, {foreignKey: "albumId"})
-Album.hasOne(HistoryCollection, {foreignKey: "albumId"})
+Album.hasMany(BookMark, {foreignKey: "albumId"})
+Album.hasOne(History, {foreignKey: "albumId"})
 
 User.hasMany(Album, {foreignKey: "userId"})
 //-----------------------------------------------------------
@@ -252,5 +267,5 @@ module.exports = {
   Setting,
   Account, 
   Subscriptions,
-  SavedCollection, 
-  HistoryCollection}
+  BookMark, 
+  History}
