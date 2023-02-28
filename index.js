@@ -100,14 +100,12 @@ app.post('/api/v1/auth/signup', (req,res) => {
 app.get( '/api/v1/live', (req,res) => {
 
   if( req.query.id == undefined){
-  fs.readFile(path.join(__dirname + "/Data/Videos.json"), ( err, data ) => {
+    fs.readFile(path.join(__dirname + "/Data/Videos.json"), ( err, data ) => {
       if( err ) return 
-      
-    res.json( JSON.parse(data ))
+      res.status(200).json( JSON.parse(data ))
     })
   }
-  res.status(200)
- })
+})
 
 app.post("/", (req,res) => {
   console.log(req.body)
