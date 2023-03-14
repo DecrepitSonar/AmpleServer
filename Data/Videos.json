@@ -4,46 +4,46 @@
         "type": "mobile",
         "items": [
             {
-                "id": 1,
-                "name": "user1",
-                "imageURL": "",
-                "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FZero%20Tolerance%20Machining%20%23short.mp4"
+                    "id": 1,
+                    "name": "user1",
+                    "imageURL": "",
+                    "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FZero%20Tolerance%20Machining%20%23short.mp4"
                 },
                 {
-                "id": 2,
-                "name": "user",
-                "imageURL": "",
-                "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FBrute%20Forcing%20An%20iPhone%205%E2%80%A6%20%23technology.mp4"
+                    "id": 2,
+                    "name": "user",
+                    "imageURL": "",
+                    "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FBrute%20Forcing%20An%20iPhone%205%E2%80%A6%20%23technology.mp4"
                 },
                 {
-                "id": 3,
-                "name": "user",
-                "imageURL": "",
-                "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FHow%20JK%20Rowling%20created%20Harry%20Potter%20%23shorts.mp4"
+                    "id": 3,
+                    "name": "user",
+                    "imageURL": "",
+                    "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FHow%20JK%20Rowling%20created%20Harry%20Potter%20%23shorts.mp4"
                 },
                 {
-                "id": 4,
-                "name": "user",
-                "imageURL": "",
-                "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FQuantum%20Torture%20Device.mp4"
+                    "id": 4,
+                    "name": "user",
+                    "imageURL": "",
+                    "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FQuantum%20Torture%20Device.mp4"
                 },
                 {
-                "id": 5,
-                "name": "user",
-                "imageURL": "",
-                "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FAndroid%20Manufacturers%20HATE%20this%20SECRET%20App!.mp4"
+                    "id": 5,
+                    "name": "user",
+                    "imageURL": "",
+                    "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FAndroid%20Manufacturers%20HATE%20this%20SECRET%20App!.mp4"
                 },
                 {
-                "id": 6,
-                "name": "user",
-                "imageURL": "",
-                "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FZero%20Tolerance%20Machining%20%23short.mp4"
+                    "id": 6,
+                    "name": "user",
+                    "imageURL": "",
+                    "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FZero%20Tolerance%20Machining%20%23short.mp4"
                 },
                 {
-                "id": 7,
-                "name": "user",
-                "imageURL": "",
-                "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FZero%20Tolerance%20Machining%20%23short.mp4"
+                    "id": 7,
+                    "name": "user",
+                    "imageURL": "",
+                    "contentURL": "https://prophile.nyc3.cdn.digitaloceanspaces.com/B-Rolls%2FZero%20Tolerance%20Machining%20%23short.mp4"
                 },
                 {
                     "id": 8,
@@ -54,7 +54,7 @@
             ]
         },
         {
-            "title": "Live Music",
+            "title": "New Videos",
             "type": "Music",
             "items": [
                 {
@@ -149,7 +149,7 @@
             ]
         },
         {
-            "title": "Live Podcast Streams ",
+            "title": "Podcasts ",
             "type": "Podcast",
             "items": [
                 {

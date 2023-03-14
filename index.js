@@ -6,6 +6,16 @@ const fs = require('fs')
 const path = require('path')
 const uuid = require('uuid')
 const cors = require("cors")
+const { Server } = require('socket.io')
+const http = require("http")
+const server = http.createServer(app)
+
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+})
+
 
 require("dotenv").config();
  
@@ -18,6 +28,20 @@ const clientSessions = require('client-sessions')
 
 const ValidateAuth = auth.validateSessionToken
 
+const chatService = require("./chatServer")
+const chatManager = require('./chatManager')
+
+const onConnection = ( Socket ) => {
+  chatService(io, Socket)
+  chatManager(io, Socket)
+}
+
+const handleSocketDisconeect = ( Socket ) =>{
+  chatManager(io, Socket)
+}
+
+io.on("connection", onConnection)
+io.on("disconnect", handleSocketDisconeect)
 app.set('port', 8000 )
 
 app.use(express.static('public'))
@@ -100,7 +124,18 @@ app.post('/api/v1/auth/signup', (req,res) => {
 app.get( '/api/v1/live', (req,res) => {
 
   if( req.query.id == undefined){
-    fs.readFile(path.join(__dirname + "/Data/Videos.json"), ( err, data ) => {
+    fs.readFile(path.join(__dirname + "/Data/LiveContent.json"), ( err, data ) => {
+      if( err ) return 
+      res.status(200).json( JSON.parse(data ))
+    })
+  }
+})
+
+
+app.get( '/api/v1/watch', (req,res) => {
+
+  if( req.query.id == undefined){
+    fs.readFile(path.join(__dirname + "/Data/videos.json"), ( err, data ) => {
       if( err ) return 
       res.status(200).json( JSON.parse(data ))
     })
@@ -399,12 +434,10 @@ app.get("/api/v1/channel", (req,res ) => {
 
 // Releases -> Releases of followed artists form user
 app.get("/api/v1/home/releases", (req,res) => {
-
    db.getAllUserSavedAlbums(req.query.user)
       .then( data => { res.json(data)})
       .catch( err => console.log( err ))
-
-  })
+})
 
 // VideoRoute
 // app.get('/api/v1/video', (req,res) => { })
@@ -560,8 +593,10 @@ app.delete('/api/v1/user/subscriptions', (req,res) => {
   // }) })
 
 // app.delete('/api/')
+
+
 db.initialize()
 .then( () => (auth.initialize() ))
 .then( () => {
-  app.listen(app.get('port'), () => { console.log(`started app on`, app.get('port')) }) })
+  server.listen(app.get('port'), () => { console.log(`started app on`, app.get('port')) }) })
 .catch( err => { console.log(err) })
