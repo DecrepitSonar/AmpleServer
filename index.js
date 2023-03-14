@@ -42,6 +42,7 @@ const handleSocketDisconeect = ( Socket ) =>{
 
 io.on("connection", onConnection)
 io.on("disconnect", handleSocketDisconeect)
+
 app.set('port', 8000 )
 
 app.use(express.static('public'))

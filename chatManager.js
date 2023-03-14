@@ -1,9 +1,8 @@
-module.exports = (socket ) => {
-
+module.exports = (io, socket ) => {
 
     const  joinRoom = (roomId ) => {
-        socket.to(roomId).emit( "connected", "connected")
         socket.join(roomId)
+        socket.to(roomId).emit( "connected", "connected")
     }
     
     const  leaveRoom= (roomId ) => {
