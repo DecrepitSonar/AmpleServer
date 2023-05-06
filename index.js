@@ -63,16 +63,16 @@ app.post('/api/v1/auth/login', (req,res) => {
 
   // call autentication function and verify user
   console.log("loging in")
+  console.log( req.body)
   auth.authenticateUser(req.body)
   .then((user) => {
 
-    console.log( "user found")
     // check if user is provided
     if(user != undefined){
 
       console.log( "checking token")
 
-      auth.validateSessionToken(req)
+      auth.validateSessionToken(req, user.id)
       .then( result => {
   
         console.log( "setting token")
@@ -83,6 +83,7 @@ app.post('/api/v1/auth/login', (req,res) => {
         res.json(data)
       })
       .catch( err => {
+        console.log( err )
         throw err 
       })
 
@@ -94,7 +95,16 @@ app.post('/api/v1/auth/login', (req,res) => {
     res.status(403).json({"message": err})
   })
 })
- 
+app.post("/api/v1/auth/verify", (req,res) => {
+  console.log( req.body)
+  auth.validateSessionToken(req, res)
+  .then( data => {
+    res.json(data)
+  })
+  .catch( err => {
+    console.log( err )
+  })
+})
 // Register New User
 app.post('/api/v1/auth/signup', (req,res) => {
 

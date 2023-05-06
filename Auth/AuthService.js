@@ -12,6 +12,7 @@ const Schema = mongoose.Schema
 
 let userSessionsSchema = new Schema({
     sessionToken: {type: String},
+    userId: { type: String },
     loginHistory: {
       dateTime: {type: Date},
       userAgent: {type: String}
@@ -78,37 +79,38 @@ exports.registerUser = async (data) => {
 
 }
 exports.authenticateUser = async (credentials) => {
-    console.log("Authenticating user...")
 
     // Find User if exists -- throw error else
     let response = await  User.findOne({where: { email: credentials.email.toLowerCase() }, include: Setting})
-    .then( user => {  return user })
+    .then( user => { return user })
     .catch(err => { return err})
 
-
       let passVerification = bcrypt.compare(credentials.password, response.Setting.password, ( err, result) => {
-        if( err ){ console.log( err )}
+
+        if( err ){ console.log( "error during validation" + err )}
 
         if( !result ){
           throw "Password not match"
         }
+
+        return 
+        
       })
 
-   
-    return response
+      return response
+
 }
 
 // Get session token and validate 
-exports.validateSessionToken = async ( req ) => {
+exports.validateSessionToken = async ( req, id) => {
   
-  console.log("validating User Session")
-  
-  let token = req.headers.xauth
-
+  const token = req.query.token 
+  console.log( "token", token)
   if( token == undefined){
 
     let session = new Session
     session.sessionToken = uuid()
+    session.userId = id
     session.loginHistory = {
       datetime: Date.now(),
       userAgent: req.get('user-agent')
@@ -122,8 +124,6 @@ exports.validateSessionToken = async ( req ) => {
   // Find token if exists -- thor error else
   let result = await Session.findOne({sessionToken: token})
   .then( result => {
-    
-    console.log( "finding result result")
 
     if( result == null){
       
@@ -132,6 +132,7 @@ exports.validateSessionToken = async ( req ) => {
 
       let session = new Session
       session.sessionToken = token
+      session.userId = id
       session.loginHistory = {
         dateTime: Date(),
         userAgent: req.get('user-agent')
@@ -145,7 +146,11 @@ exports.validateSessionToken = async ( req ) => {
       return session.sessionToken
     }
 
-    return result.sessionToken
+    let response =  User.findOne({where: { id: result.userId}})
+    .then( user => {  return user })
+    .catch(err => { return err})
+
+    return response
     
   })
   .catch( err => {
