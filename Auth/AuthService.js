@@ -38,9 +38,10 @@ exports.registerUser = async (data) => {
     await User.findOne({where: {email: data.email}})
     .then( response => {
       if(response != null){
+        console.log( response )
         throw 403
       }
-      return response
+      return 
     })
 
     try{
@@ -64,63 +65,71 @@ exports.registerUser = async (data) => {
       await user.setSetting(setting)
 
       // Create Account Settings 
-      let account = await Account.create({
-        imageURL: "6c1d77a1851c78aa2894f8b7be3f7af4"
-      }).then( result => { return result })
+      let account = await Account.create({}).then( result => { return result })
 
       // Associate Account with User's settings 
-      await account.setSetting(setting)
+      await user.setAccount(account)
+
+      // generate session token
+      let session = new Session
+      session.sessionToken = uuid()
+      session.userId = user.id
+      session.loginHistory = {}
+        // datetime: Date.now(),
+        // userAgent: req.get('user-agent')
+      // }
+
+      session.save()
+          
       
       return user 
     }
     catch( err ){
+      console.log( err )
       return "There was an error creating user"
     }
 
 }
 exports.authenticateUser = async (credentials) => {
-
+    console.log( "authenticating user")
     // Find User if exists -- throw error else
-    let response = await  User.findOne({where: { email: credentials.email.toLowerCase() }, include: Setting})
-    .then( user => { return user })
-    .catch(err => { return err})
+    try {
+      let response = await  User.findOne({where: { email: credentials.email.toLowerCase() }, include: Setting})
+      
+      const result = await bcrypt.compare(credentials.password, response.Setting.password)
 
-      let passVerification = bcrypt.compare(credentials.password, response.Setting.password, ( err, result) => {
+      if( !result ){
+        throw"Password not match"
+      }
 
-        if( err ){ console.log( "error during validation" + err )}
+      const token = req.headers.xauth
+      console.log( "token", token)
+      if( token == undefined){
 
-        if( !result ){
-          throw "Password not match"
+        let session = new Session
+        session.sessionToken = uuid()
+        session.userId = id
+        session.loginHistory = {
+          datetime: Date.now(),
+          userAgent: req.get('user-agent')
         }
 
-        return 
-        
-      })
+        session.save()
 
-      return response
+        return session.sessionToken
+      }
+        
+      return response 
+
+    }catch( err){
+      throw err
+    }
 
 }
 
 // Get session token and validate 
 exports.validateSessionToken = async ( req, id) => {
-  
-  const token = req.query.token 
-  console.log( "token", token)
-  if( token == undefined){
 
-    let session = new Session
-    session.sessionToken = uuid()
-    session.userId = id
-    session.loginHistory = {
-      datetime: Date.now(),
-      userAgent: req.get('user-agent')
-    }
-
-    session.save()
-
-    return session.sessionToken
-  }
-    
   // Find token if exists -- thor error else
   let result = await Session.findOne({sessionToken: token})
   .then( result => {
@@ -147,10 +156,14 @@ exports.validateSessionToken = async ( req, id) => {
     }
 
     let response =  User.findOne({where: { id: result.userId}})
-    .then( user => {  return user })
-    .catch(err => { return err})
+    .then( user => {  
+      if( user != null){ return user}
+      return null
+    })
 
-    return response
+    .catch(err => { throw err  })
+
+    return response != null ? response : null 
     
   })
   .catch( err => {

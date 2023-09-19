@@ -30,6 +30,7 @@ const ValidateAuth = auth.validateSessionToken
 
 const chatService = require("./chatServer")
 const chatManager = require('./chatManager')
+const { getUserWithId } = require('./Data/UserServices.js')
 
 const onConnection = ( Socket ) => {
   chatService(io, Socket)
@@ -56,7 +57,29 @@ app.use(clientSessions({
   activeDuration: 1000 * 60 }))
 
 
-app.use(function(req, res, next) { res.locals.session = req.session; next();});
+app.use(function(req, res, next) { 
+  console.log("setting sessions")
+  console.log( req.headers.xauth)
+
+
+  auth.validateSessionToken(req)
+  .then( result => {
+
+    console.log( "setting token")
+    console.log( result )
+    // let data = user
+    // data.dataValues.apiKey = result
+
+    // res.json(data)
+  })
+  .catch( err => {
+    console.log( "error", err )
+    throw err 
+  })
+
+  res.locals.session = req.session; 
+  next();
+});
 
 
 app.post('/api/v1/auth/login', (req,res) => {
@@ -66,44 +89,30 @@ app.post('/api/v1/auth/login', (req,res) => {
   console.log( req.body)
   auth.authenticateUser(req.body)
   .then((user) => {
-
+    console.log( user )
+    console.log( "user received ")
     // check if user is provided
-    if(user != undefined){
+    // if(user != undefined){
 
-      console.log( "checking token")
-
-      auth.validateSessionToken(req, user.id)
-      .then( result => {
-  
-        console.log( "setting token")
-        console.log( result )
-        let data = user
-        data.dataValues.apiKey = result
-
-        res.json(data)
-      })
-      .catch( err => {
-        console.log( err )
-        throw err 
-      })
-
-    }else{
-      res.status(403).send("User not found")
-    }
+    // }else{
+      // res.status(403).send("User not found")
+    // }
   })
   .catch( err => {
     res.status(403).json({"message": err})
   })
 })
-app.post("/api/v1/auth/verify", (req,res) => {
-  console.log( req.body)
-  auth.validateSessionToken(req, res)
-  .then( data => {
-    res.json(data)
-  })
-  .catch( err => {
-    console.log( err )
-  })
+app.get("/api/v1/auth/verify", (req,res) => {
+  console.log( 'req')
+  // auth.validateSessionToken(req, res)
+  // .then( data => {
+  //   if( data != null) { res.json(data) }
+  //   res.status(403)
+  // })
+  // .catch( err => {
+  //   console.log("error", err )
+    res.status(200)
+  // })
 })
 // Register New User
 app.post('/api/v1/auth/signup', (req,res) => {
@@ -141,7 +150,6 @@ app.get( '/api/v1/live', (req,res) => {
     })
   }
 })
-
 
 app.get( '/api/v1/watch', (req,res) => {
 
@@ -246,9 +254,13 @@ app.get('/api/v1/track', (req,res) => {
     break
   } })
 
+app.get("/api/v1/user", (req,res) => {
+  getUserWithId(req.query.id)
+  .then( result => res.json( result ))
+  .catch( err => console.log( err ))
+})
 // Artist -> Route -> Artist object using artist id
 app.get('/api/v1/artist', (req,res) => {
-  console.log(req.query.id)
   db.GetArtistProfile(req.query.id)
   .then( data => {
     // console.log(data)
